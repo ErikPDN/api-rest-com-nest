@@ -1,7 +1,23 @@
+import { Body, Controller, Post } from '@nestjs/common';
+import { AuthenticateUserRequestDTO } from './dto/authenticate-user-request.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthService } from '@root/service/auth.service';
+import { AuthenticateUserResponseDTO } from './dto/authenticate-user-response.dto';
+
+@ApiTags('auth')
+@Controller('auth')
 export class AuthController {
-  public async login() {
-    return {
-      token: 'sample-jwt-token',
-    };
+  constructor(private readonly authService: AuthService) { }
+
+  @Post('login')
+  public async login(
+    @Body() credentials: AuthenticateUserRequestDTO,
+  ): Promise<AuthenticateUserResponseDTO> {
+    const tokenResponse = await this.authService.login({
+      email: credentials.email,
+      password: credentials.password,
+    });
+
+    return new AuthenticateUserResponseDTO(tokenResponse);
   }
 }
