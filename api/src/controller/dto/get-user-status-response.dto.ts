@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@root/domain/user.domain';
 
 export class GetUserStatusResponseDTO {
   @ApiProperty({
@@ -32,18 +31,11 @@ export class GetUserStatusResponseDTO {
   })
   public updatedAt: Date;
 
-  @ApiProperty({
-    description: 'The hashed password of the user',
-    example: '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36W0f6b8a9jOeG6Fh5h8K5e',
-  })
-  public hashedPassword?: string;
-
-  constructor(user: User) {
+  constructor(user: GetUserStatusResponseDTO) {
     this.id = user.id;
     this.username = user.username;
     this.email = user.email;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
-    this.hashedPassword = user.password;
   }
 }

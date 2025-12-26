@@ -9,6 +9,14 @@ interface CreateUserParams {
   password: string;
 }
 
+interface IUser {
+  id: string;
+  username: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) { }
@@ -32,13 +40,19 @@ export class UserService {
     return newUser.id;
   }
 
-  public async getStatus(id: string): Promise<User> {
+  public async getStatus(id: string): Promise<IUser> {
     const user = await this.userRepository.getUserById(id);
 
     if (!user) {
       throw new BadRequestException('User not found.');
     }
 
-    return user;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 }

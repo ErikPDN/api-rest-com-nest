@@ -1,9 +1,9 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
-import { CreateUserResponseDTO } from './dto/CreateUserResponse.dto';
-import { CreateUserRequestDTO } from './dto/CreateUserRequest.dto';
+import { CreateUserResponseDTO } from './dto/create-user-response.dto';
+import { CreateUserRequestDTO } from './dto/create-user-request.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from '@root/service/user.service';
-import { GetUserStatusResponseDTO } from './dto/GetUserStatusResponse.dto';
+import { GetUserStatusResponseDTO } from './dto/get-user-status-response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -37,6 +37,12 @@ export class UserController {
     @Param('id') userId: string,
   ): Promise<GetUserStatusResponseDTO> {
     const userResponse = await this.userService.getStatus(userId);
-    return new GetUserStatusResponseDTO(userResponse);
+    return new GetUserStatusResponseDTO({
+      id: userResponse.id,
+      username: userResponse.username,
+      email: userResponse.email,
+      createdAt: userResponse.createdAt,
+      updatedAt: userResponse.updatedAt,
+    });
   }
 }
