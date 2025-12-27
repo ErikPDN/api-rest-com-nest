@@ -1,3 +1,5 @@
+import { FastifyRequest } from 'fastify';
+
 export interface TokenPayload {
   sub: string;
   username: string;
@@ -6,3 +8,7 @@ export interface TokenPayload {
   iat: number;
   aud: string;
 }
+
+export type AuthenticatedRequest = {
+  userId: string;
+} & FastifyRequest;

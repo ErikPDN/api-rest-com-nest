@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '@root/repository/user.repository';
@@ -29,14 +33,14 @@ export class AuthService {
     const passwordMatches = await compare(password, user.password);
 
     if (!passwordMatches) {
-      throw new BadRequestException('Invalid password.');
+      throw new UnauthorizedException('Invalid password.');
     }
 
     const payload: TokenPayload = {
       sub: user.id,
       username: user.username,
       email: user.email,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
       iat: Math.floor(Date.now() / 1000),
       aud: 'user-service',
     };

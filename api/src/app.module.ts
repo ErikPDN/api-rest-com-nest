@@ -6,6 +6,7 @@ import { AuthController } from './controller/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from './service/auth.service';
+import { AuthGuard } from './shared/auth.guard';
 
 @Module({
   imports: [
@@ -15,6 +16,14 @@ import { AuthService } from './service/auth.service';
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [UserController, AuthController],
-  providers: [UserService, UserRepository, AuthService],
+  providers: [
+    UserService,
+    UserRepository,
+    AuthService,
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule { }
