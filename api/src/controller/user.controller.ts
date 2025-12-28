@@ -69,7 +69,6 @@ export class UserController {
   public async getMe(
     @Req() request: AuthenticatedRequest,
   ): Promise<GetUserStatusResponseDTO> {
-    this.logger.log(`getMe route called by userId: ${request.userId}`);
     return this.getStatus(request.userId);
   }
 }
